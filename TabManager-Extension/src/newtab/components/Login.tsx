@@ -1,7 +1,7 @@
 import { LoginProps, login } from "@/api/auth/login";
 import { Button, PasswordInput, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Page } from "../types/Page";
 
 type FormValues = {
@@ -18,7 +18,6 @@ export function Login({ setPage } : LoginPageProps) {
       if (res.ok) {
          setPage('main')
       } else {
-         console.log("Login failed", res);
          setError(res.data || "An error occurred")
       }
    };
@@ -31,6 +30,9 @@ export function Login({ setPage } : LoginPageProps) {
          email: (value) => (/^\S+@\S+$/.test(value) ? null : "Invalid email"),
       },
    });
+   useEffect(() => {
+      if(localStorage.getItem('token')) setPage('main')
+   },[])
    const [error, setError] = useState<string | null>(null);
    return (
       <div className="flex items-center justify-center h-screen">
