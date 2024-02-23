@@ -14,6 +14,7 @@ namespace Core.Domain.Entities
       public ICollection<Bookmark>? Bookmarks { get; set; }
 
       [ForeignKey("Space_Id")]
+      [Required]
       public required Space Space { get; set; }
    }
 }

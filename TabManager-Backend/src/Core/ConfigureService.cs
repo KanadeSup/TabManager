@@ -12,6 +12,7 @@ namespace Core
          services.AddScoped<IJwtService, JwtService>();
          services.AddScoped<ISpaceService, SpaceService>();
          services.AddScoped<ICurrentUserService, CurrentUserService>();
+         services.AddScoped<ICategoryService, CategoryService>();
          return services;
       }
    }
