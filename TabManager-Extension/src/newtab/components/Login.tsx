@@ -2,7 +2,7 @@ import { LoginProps, login } from "@/api/auth/login";
 import { Button, PasswordInput, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { useEffect, useState } from "react";
-import { Page } from "../types/Page";
+import { Page } from "../../types/Page";
 
 type FormValues = {
    email: string;

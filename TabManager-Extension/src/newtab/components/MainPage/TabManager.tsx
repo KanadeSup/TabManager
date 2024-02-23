@@ -1,10 +1,11 @@
 import { useTabOverStore } from "@/newtab/stores/useTabOver";
-import { Tab } from "@/newtab/types/Tab";
+import { Tab } from "@/types/Tab";
 import { useDroppable } from "@dnd-kit/core";
 import { Accordion, Button, Card, Text, TextInput, Title } from "@mantine/core";
 import { IconBrandFacebook, IconSearch } from "@tabler/icons-react";
 import { CreateCategoryModal } from "./CreateCategoryModal";
 import { useState } from "react";
+import { useSelectedSpace } from "@/newtab/stores/useSelectedSpace";
 
 export function TabManager() {
    return (
@@ -16,9 +17,10 @@ export function TabManager() {
    );
 }
 function Header() {
+   const space = useSelectedSpace(state => state.space);
    return (
       <div className="flex items-center justify-between py-3">
-         <h1 className="text-[25px] font-bold"> Header name </h1>
+         <h1 className="text-[25px] font-bold"> {space?.name} </h1>
          <TextInput
             leftSection={<IconSearch size={16} />}
             placeholder="Search"

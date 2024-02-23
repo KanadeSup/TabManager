@@ -4,7 +4,7 @@ import "./index.css"
 import '@mantine/core/styles.css';
 import { MantineProvider } from '@mantine/core';
 import { useState } from 'react';
-import { Page } from './types/Page';
+import { Page } from '../types/Page';
 import { Register } from './components/Register';
 import { MainPage } from './components/MainPage';
 

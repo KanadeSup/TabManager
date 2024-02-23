@@ -11,6 +11,7 @@ export async function fetchData({method = "GET", url="", headers = {}, body={}})
          url: appsetting.apiBaseUrl + url,
          headers: {
             "Content-Type": "application/json",
+            "Authorization": "Bearer " + localStorage.getItem("token"),
             ...headers,
          },
          data: body,

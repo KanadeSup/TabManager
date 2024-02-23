@@ -1,7 +1,10 @@
 import { IconLogout } from "@tabler/icons-react";
 import { IconLibraryPlus, IconLogout2, IconPointFilled, IconSettings } from "@tabler/icons-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { CreateSpaceModal } from "./CreateSpaceModal";
+import { getAllSPace } from "@/api/space/getAllSpace";
+import { Space } from "@/types/Space";
+import { useSelectedSpace } from "@/newtab/stores/useSelectedSpace";
 
 export function Sidebar() {
     return (
@@ -30,23 +33,43 @@ function Header() {
 }
 
 function SpaceList() {
+   const spaceList = useSpaces()
    return (
       <div className="mt-1">
-         <SpaceCard name="Personal"/>
-         <SpaceCard name="Work"/>
-         <SpaceCard name="Social"/>
+         {
+            spaceList ? 
+               spaceList.map(space => (
+                  <SpaceCard key={space.id} space={space}/>
+               )) : (
+                  null
+               )
+         }
       </div>
    )
 }
 
-type SpaceCardProps = {
-   name: string;
+function useSpaces() {
+   const [spaces, setSpaces] = useState<Array<Space> | null>(null)
+   useEffect(() => {
+      async function fetchSpaces() {
+         const res = await getAllSPace()
+         if(!res.ok) return
+         console.log(res.data)
+         setSpaces(res.data)
+      }
+      fetchSpaces()
+   }, [])
+   return spaces
 }
-function SpaceCard({ name }: SpaceCardProps) {
+
+function SpaceCard({ space }: { space: Space }) {
+   const setSpace = useSelectedSpace(state => state.setSpace)
    return (
-      <div className="flex items-center gap-3 hover:bg-gray-800 px-3 py-2 cursor-pointer rounded-lg">
-         <div className="w-[10px] h-[10px] rounded-full bg-[#de493e]"></div>
-         <h1 className="font-medium text-[16px]">{name}</h1>
+      <div className="flex items-center gap-3 hover:bg-gray-800 px-3 py-2 cursor-pointer rounded-lg"
+         onClick={e=>setSpace(space)}
+      >
+         <div className={`w-[10px] h-[10px] rounded-full`} style={{backgroundColor: `${space.hexColor}`}}></div>
+         <h1 className="font-medium text-[16px]">{space.name}</h1>
       </div>
    )
 }
