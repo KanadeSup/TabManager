@@ -1,20 +1,16 @@
-using Application.Filters;
 using Core.DTO;
 using Core.ServiceContracts;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Application.Controllers
 {
-   [Route("api/[controller]")]
-   [TypeFilter(typeof(ValidationActionFilter))]
-   public class AuthController : ControllerBase
+
+   public class AuthController : ControllerBaseAPI
    {
       private readonly IAuthenticationService _authenticationService;
-      private readonly IJwtService _jwtService;
-      public AuthController(IAuthenticationService authenticationService, IJwtService jwtService)
+      public AuthController(IAuthenticationService authenticationService)
       {
          _authenticationService = authenticationService;
-         _jwtService = jwtService;
       }
 
       [HttpPost("register")]

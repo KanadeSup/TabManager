@@ -18,6 +18,7 @@ namespace Infrastructure
       public static IServiceCollection AddRepositories(this IServiceCollection services)
       {
          services.AddScoped<IAccountRepository, AccountRepository>();
+         services.AddScoped<ISpaceRepository, SpaceRepository>();
          return services;
       }
    }

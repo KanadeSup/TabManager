@@ -7,8 +7,15 @@ namespace Core.Domain.Entities
       [Key]
       public Guid Id { get; set; }
       
-      public string? Name { get; set; }
+      [Required]
+      public required string Name { get; set; }
+      
+      [Required]
+      public required string HexColor { get; set; }
       
       public ICollection<Category>? Categories { get; set; }
+
+      [Required]
+      public UserAccount userAccount { get; set; } = null!;
    }
 }

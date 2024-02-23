@@ -7,8 +7,11 @@ namespace Core
    {
       public static IServiceCollection AddServices(this IServiceCollection services)
       {
+         services.AddHttpContextAccessor();
          services.AddScoped<IAuthenticationService, AuthenticationService>();
          services.AddScoped<IJwtService, JwtService>();
+         services.AddScoped<ISpaceService, SpaceService>();
+         services.AddScoped<ICurrentUserService, CurrentUserService>();
          return services;
       }
    }

@@ -10,7 +10,7 @@ namespace Core.DTO
       public string Email { get; set; } = null!;
 
       [Required]
-      [StringLength(100, MinimumLength = 8)]
+      [StringLength(100, MinimumLength = 6)]
       public string Password { get; set; } = null!;
 
       [StringLength(50, MinimumLength = 3)]

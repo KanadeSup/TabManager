@@ -24,6 +24,6 @@ namespace Core.Domain.Entities
       
       public byte[]? Avatar { get; set; }
 
-      public ICollection<Bookmark>? Bookmarks { get; set; }
+      public ICollection<Space>? Spaces { get; set; }
    }
 }

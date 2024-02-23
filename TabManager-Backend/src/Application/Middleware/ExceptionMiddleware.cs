@@ -19,7 +19,7 @@ namespace Application.Middleware
          }
          catch(CustomException e)
          {
-            context.Response.StatusCode = StatusCodes.Status400BadRequest;
+            context.Response.StatusCode = e.StatusCode;
             context.Response.ContentType = "text/plain";
             await context.Response.WriteAsync(e.Message);
          }
