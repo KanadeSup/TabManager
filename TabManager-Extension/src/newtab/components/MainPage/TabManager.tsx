@@ -1,11 +1,13 @@
 import { useTabOverStore } from "@/newtab/stores/useTabOver";
 import { Tab } from "@/types/Tab";
 import { useDroppable } from "@dnd-kit/core";
-import { Accordion, Button, Card, Text, TextInput, Title } from "@mantine/core";
+import { Accordion, Button, Card, Collapse, Text, TextInput, Title } from "@mantine/core";
 import { IconBrandFacebook, IconSearch } from "@tabler/icons-react";
 import { CreateCategoryModal } from "./CreateCategoryModal";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useSelectedSpace } from "@/newtab/stores/useSelectedSpace";
+import { getAllCategories } from "@/api/Category/getAllCategories";
+import { Category } from "@/types/Category";
 
 export function TabManager() {
    return (
@@ -52,28 +54,25 @@ function Toolbar() {
    );
 }
 function CategoryList() {
+   const space = useSelectedSpace(state => state.space);
+   const [categories, setCategories] = useState<Array<Category>|null>(null);
+   useEffect(() => {
+      async function fetchCategories() {
+         if (!space?.id) return;
+         const res = await getAllCategories({ spaceId: space.id });
+         if (!res.ok) return;
+         setCategories(res.data);
+      }
+      fetchCategories();
+   },[space?.id])
    return (
-      <Accordion
-         multiple={true}
-         styles={{
-            item: {
-               border: "none",
-            },
-            control: {
-               backgroundColor: "#191A21",
-               padding: "0px 30px",
-               borderRadius: "10px 10px",
-            },
-            panel: {
-               backgroundColor: "#191A21",
-               borderRadius: "0px 0px 10px 10px",
-            },
-         }}
-         className="space-y-5"
-      >
-         <CategoryCard name="Category one" id="one" />
-         <CategoryCard name="Category two" id="two" />
-      </Accordion>
+      <div className="space-y-5">
+         {
+            categories ? categories.map(category => (
+               <CategoryCard key={category.id} name={category.name} id={category.id} />
+            )) : null
+         }
+      </div>
    );
 }
 
@@ -81,32 +80,24 @@ function CategoryCard({ name, id }: { name: string; id: string }) {
    const { isOver, setNodeRef } = useDroppable({
       id: id,
    });
+   const [isOpened, setIsOpened] = useState(false);
    const dropOverId = useTabOverStore((state) => state.dropOverId);
    const tabItemData = useTabOverStore((state) => state.tabItemData);
    console.log(dropOverId, dropOverId == id, id);
    return (
-      <Accordion.Item
-         value={id}
-         ref={setNodeRef}
-         style={{
-            border: isOver ? "1px solid gray" : "none",
-            borderRadius: "10px",
-         }}
-      >
-         <Accordion.Control 
-            className="group"
+      <div className="border border-gray-600 rounded-lg px-5 py-2 bg-[#191A21] " ref={setNodeRef}>
+         <div
+            onClick={() => setIsOpened(!isOpened)}
+            className="cursor-pointer select-none"
          >
-            <div className="flex justify-between items-center">
-               <h1 className="font-bold text-[20px]"> {name} </h1>
-               <div className="mr-10 invisible group-hover:visible">
-                  <Button> edit </Button>
-               </div>
+            <h1 className="text-2xl font-bold"> {name} </h1>
+         </div>
+         <Collapse in={isOpened}>
+            <div className="py-3">
+               {dropOverId === id && tabItemData ? <TabCard tab={tabItemData} /> : null}
             </div>
-         </Accordion.Control>
-         <Accordion.Panel className="flex">
-            {dropOverId === id && tabItemData ? <TabCard tab={tabItemData} /> : null}
-         </Accordion.Panel>
-      </Accordion.Item>
+         </Collapse>  
+      </div>  
    );
 }
 

@@ -54,7 +54,6 @@ function useSpaces() {
       async function fetchSpaces() {
          const res = await getAllSPace()
          if(!res.ok) return
-         console.log(res.data)
          setSpaces(res.data)
       }
       fetchSpaces()
