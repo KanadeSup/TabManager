@@ -20,6 +20,7 @@ namespace Infrastructure
          services.AddScoped<IAccountRepository, AccountRepository>();
          services.AddScoped<ISpaceRepository, SpaceRepository>();
          services.AddScoped<ICategoryRepository, CategoryRepository>();
+         services.AddScoped<IBookmarkRepository, BookmarkRepository>();
          return services;
       }
    }

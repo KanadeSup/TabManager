@@ -47,13 +47,13 @@ namespace Core.Services {
             throw new CategoryNotFoundException("category is not found");
          }
 
-         if(await _categoryRepository.IsCategoryBelongsToSpaceAsync(categoryId, Guid.Parse(userId)) == false) {
+         if(await _categoryRepository.IsCategoryBelongToUserAsync(categoryId, Guid.Parse(userId)) == false) {
             throw new CategoryNotFoundException("Category is not found");
          }
          await _categoryRepository.DeleteCategoryAsync(categoryId);
       }
 
-      public async Task<List<CategoryResponseDTO>> GetCategoriesAsync(Guid spaceId)
+      public async Task<List<FullyCategoryResponseDTO>> GetCategoriesAsync(Guid spaceId)
       {
          var userId = _currentUserService.UserId;
          if(userId == null) {
@@ -80,7 +80,7 @@ namespace Core.Services {
             throw new CategoryNotFoundException("category is not found");
          }
 
-         if(await _categoryRepository.IsCategoryBelongsToSpaceAsync(categoryId, Guid.Parse(userId)) == false) {
+         if(await _categoryRepository.IsCategoryBelongToUserAsync(categoryId, Guid.Parse(userId)) == false) {
             throw new CategoryNotFoundException("Category is not found");
          }
 
@@ -99,7 +99,7 @@ namespace Core.Services {
             throw new CategoryNotFoundException("category is not found");
          }
 
-         if(await _categoryRepository.IsCategoryBelongsToSpaceAsync(categoryId, Guid.Parse(userId)) == false) {
+         if(await _categoryRepository.IsCategoryBelongToUserAsync(categoryId, Guid.Parse(userId)) == false) {
             throw new CategoryNotFoundException("Category is not found");
          }
 

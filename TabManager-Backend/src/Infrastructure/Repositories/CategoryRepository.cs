@@ -39,16 +39,24 @@ namespace Infrastructure.Repositories {
          await _context.SaveChangesAsync();
       }
 
-      public Task<List<CategoryResponseDTO>> GetCategoriesAsync(Guid spaceId)
+      public Task<List<FullyCategoryResponseDTO>> GetCategoriesAsync(Guid spaceId)
       {
          var hasSpace = _context.Spaces.AnyAsync(x => x.Id == spaceId);
          if(!hasSpace.Result)
                throw new ArgumentException("spaceId is not valid");
+
          return _context.Categories
             .Where(x => x.Space.Id == spaceId)
-            .Select(x => new CategoryResponseDTO {
+            .Select(x => new FullyCategoryResponseDTO {
                Id = x.Id,
                Name = x.Name,
+               Bookmarks = x.Bookmarks.Select(y => new BookmarkResponseDTO {
+                  Id = y.Id,
+                  Title = y.Title,
+                  Url = y.Url,
+                  WebIcon = y.WebIcon,
+                  Description = y.Description
+               }).ToList(),
             }).ToListAsync();
       }
 
@@ -62,9 +70,9 @@ namespace Infrastructure.Repositories {
             }).FirstOrDefaultAsync();
       }
 
-      public Task<bool> IsCategoryBelongsToSpaceAsync(Guid categoryId, Guid space)
+      public Task<bool> IsCategoryBelongToUserAsync(Guid categoryId, Guid userId)
       {
-         return _context.Categories.AnyAsync(x => x.Id == categoryId && x.Space.Id == space);
+         return _context.Categories.AnyAsync(x => x.Id == categoryId && x.Space.userAccount.Id == userId);
       }
 
       public Task<bool> IsCategoryExistsAsync(Guid categoryId)

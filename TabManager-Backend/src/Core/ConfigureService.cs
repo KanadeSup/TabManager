@@ -13,6 +13,7 @@ namespace Core
          services.AddScoped<ISpaceService, SpaceService>();
          services.AddScoped<ICurrentUserService, CurrentUserService>();
          services.AddScoped<ICategoryService, CategoryService>();
+         services.AddScoped<IBookmarkService, BookmarkService>();
          return services;
       }
    }

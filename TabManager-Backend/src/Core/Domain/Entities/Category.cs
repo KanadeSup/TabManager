@@ -11,7 +11,7 @@ namespace Core.Domain.Entities
       [Required]
       public required string Name { get; set; }
       
-      public ICollection<Bookmark>? Bookmarks { get; set; }
+      public ICollection<Bookmark> Bookmarks { get; set; } = new List<Bookmark>();
 
       [ForeignKey("Space_Id")]
       [Required]
