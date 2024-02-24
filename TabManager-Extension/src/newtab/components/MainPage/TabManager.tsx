@@ -7,7 +7,8 @@ import { CreateCategoryModal } from "./CreateCategoryModal";
 import { useEffect, useState } from "react";
 import { useSelectedSpace } from "@/newtab/stores/useSelectedSpace";
 import { getAllCategories } from "@/api/Category/getAllCategories";
-import { Category } from "@/types/Category";
+import { Category, FullyCategory } from "@/types/Category";
+import { useCategoriesStore } from "@/newtab/stores/useCategoriesStore";
 
 export function TabManager() {
    return (
@@ -55,7 +56,8 @@ function Toolbar() {
 }
 function CategoryList() {
    const space = useSelectedSpace(state => state.space);
-   const [categories, setCategories] = useState<Array<Category>|null>(null);
+   const setCategories = useCategoriesStore(state => state.setCategories);
+   const categories = useCategoriesStore(state => state.categories);
    useEffect(() => {
       async function fetchCategories() {
          if (!space?.id) return;
@@ -69,32 +71,42 @@ function CategoryList() {
       <div className="space-y-5">
          {
             categories ? categories.map(category => (
-               <CategoryCard key={category.id} name={category.name} id={category.id} />
+               <CategoryCard key={category.id} category={category} />
             )) : null
          }
       </div>
    );
 }
 
-function CategoryCard({ name, id }: { name: string; id: string }) {
+function CategoryCard({ category }: { category: FullyCategory }) {
    const { isOver, setNodeRef } = useDroppable({
-      id: id,
+      id: category.id,
    });
    const [isOpened, setIsOpened] = useState(false);
    const dropOverId = useTabOverStore((state) => state.dropOverId);
    const tabItemData = useTabOverStore((state) => state.tabItemData);
-   console.log(dropOverId, dropOverId == id, id);
+   
    return (
-      <div className="border border-gray-600 rounded-lg px-5 py-2 bg-[#191A21] " ref={setNodeRef}>
+      <div className="border border-gray-600 rounded-lg px-5 py-2 bg-[#191A21]" ref={setNodeRef}>
          <div
             onClick={() => setIsOpened(!isOpened)}
             className="cursor-pointer select-none"
          >
-            <h1 className="text-2xl font-bold"> {name} </h1>
+            <h1 className="text-2xl font-bold"> {category.name} </h1>
          </div>
          <Collapse in={isOpened}>
-            <div className="py-3">
-               {dropOverId === id && tabItemData ? <TabCard tab={tabItemData} /> : null}
+            <div className="py-3 flex gap-5">
+               {category.bookmarks.map((bookmark) => (
+                  <TabCard 
+                     key={bookmark.id} 
+                     tab={{ 
+                        title: bookmark.title, 
+                        url: bookmark.url, 
+                        icon: bookmark.iconUrl 
+                     }} 
+                  />
+               ))}
+               {dropOverId === category.id && tabItemData ? <TabCard tab={tabItemData} /> : null}
             </div>
          </Collapse>  
       </div>  
@@ -111,6 +123,9 @@ function TabCard({ tab }: { tab: Tab }) {
                backgroundColor: "#1F2129",
                borderRadius: "5px",
             },
+         }}
+         onClick={() => {
+            browser.tabs.create({ url: tab.url });
          }}
       >
          <div className="flex items-center gap-2 border-b border-b-gray-700 pb-3">

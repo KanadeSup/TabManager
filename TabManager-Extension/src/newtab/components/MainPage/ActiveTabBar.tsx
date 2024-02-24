@@ -1,6 +1,5 @@
 import { useDraggable } from "@dnd-kit/core";
 import { useEffect, useState } from "react";
-import {CSS} from '@dnd-kit/utilities';
 
 type Tab = {
    id: number | undefined;
@@ -37,10 +36,11 @@ const useTabs = () => {
    const [tabs, setTabs] = useState<Array<Tab>>([]);
    useEffect(() => {
       async function getTabs() {
-         setTabs(await getAllTabs());
+         const tabList = await getAllTabs();
+         setTabs(tabList);
       }
       getTabs();
-   });
+   }, []);
    return tabs;
 };
 
@@ -59,7 +59,7 @@ async function getAllTabs() {
 
 function TabCard({tab} : {tab: Tab}) {
    const {attributes, listeners, setNodeRef, transform} = useDraggable({
-      id: tab.id || 0,
+      id: tab.id || -1,
       data: {
          title: tab.title,
          url: tab.url,
