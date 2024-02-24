@@ -1,7 +1,6 @@
 type Tab = {
-   id: string | undefined;
    title: string | undefined;
-   url: string | undefined;
+   url: string;
    icon: string | undefined;
 };
 export type { Tab };
