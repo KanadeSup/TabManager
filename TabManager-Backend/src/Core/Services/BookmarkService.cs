@@ -42,10 +42,11 @@ namespace Core.Services
       public async Task DeleteBookmarkAsync(Guid bookmarkId)
       {
          var userId = _currentUserService.UserId;
+         
          if(userId == null)
             throw new Exception("userId is not found in token");
          
-         if(!await _bookmarkRepository.IsBookmarkBelongsToUserAsync(bookmarkId, Guid.Parse(userId)))
+         if(!await _bookmarkRepository.IsBookmarkBelongsToUserAsync(Guid.Parse(userId), bookmarkId))
             throw new BookmarkNotFoundException("Bookmark not found.");
 
          if(!await _bookmarkRepository.IsBookmarkExistsAsync(bookmarkId))
@@ -60,7 +61,7 @@ namespace Core.Services
          if(userId == null)
             throw new Exception("userId is not found in token");
          
-         if(!await _bookmarkRepository.IsBookmarkBelongsToUserAsync(bookmarkId, Guid.Parse(userId)))
+         if(!await _bookmarkRepository.IsBookmarkBelongsToUserAsync(Guid.Parse(userId), bookmarkId))
             throw new BookmarkNotFoundException("Bookmark not found.");
 
          if(!await _bookmarkRepository.IsBookmarkExistsAsync(bookmarkId))
