@@ -1,1 +1,0 @@
-Tab manager Extension for firefox
