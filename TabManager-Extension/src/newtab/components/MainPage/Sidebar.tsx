@@ -8,7 +8,7 @@ import { useSelectedSpace } from "@/newtab/stores/useSelectedSpace";
 
 export function Sidebar() {
     return (
-      <div className="flex flex-col w-[270px] bg-[#1A1D27] px-5 py-3">
+      <div className="flex flex-col w-[270px] bg-[#1A1D27] px-5 py-3 shrink-0">
          <Header/>
          <SpaceList/>
          <Footer/>
