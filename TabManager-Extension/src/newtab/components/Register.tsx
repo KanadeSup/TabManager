@@ -18,7 +18,6 @@ export function Register({ setPage } : RegisterPageProps) {
       if (res.ok) {
          setPage('login')
       } else {
-         console.log("Login failed", res);
          setError(res.data || "An error occurred")
       }
    };
