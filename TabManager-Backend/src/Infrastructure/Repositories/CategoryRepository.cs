@@ -84,7 +84,7 @@ namespace Infrastructure.Repositories {
       {
          var categoryById = await _context.Categories.FirstOrDefaultAsync(x => x.Id == categoryId);
          if(categoryById == null)
-               throw new ArgumentException("categoryId is not valid");
+            throw new ArgumentException("categoryId is not valid");
          categoryById.Name = category.Name;
          _context.Categories.Update(categoryById);
          await _context.SaveChangesAsync();
