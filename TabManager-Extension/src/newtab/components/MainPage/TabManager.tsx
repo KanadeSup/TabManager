@@ -95,7 +95,7 @@ function CategoryCard({ category }: { category: FullyCategory }) {
          >
             <h1 className="text-2xl font-bold"> {category.name} </h1>
          </div>
-         <Collapse in={isOpened}>
+         <Collapse in={isOpened || dropOverId === category.id}>
             <div className="py-3 flex gap-5 flex-wrap">
                {category.bookmarks.map((bookmark) => (
                   <TabCard 
