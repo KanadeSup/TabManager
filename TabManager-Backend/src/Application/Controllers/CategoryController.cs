@@ -47,5 +47,13 @@ namespace Application.Controllers
          return Ok();
       }
 
+      [Route("/api/categories/{categoryId}")]
+      [HttpPut]
+      public async Task<IActionResult> UpdateCategoryAsync(Guid categoryId, [FromBody] UpdateCategoryDTO category)
+      {
+         var categoryDTO = await _categoryService.UpdateCategoryAsync(categoryId, category);
+         return Ok(categoryDTO);
+      }
+
    }
 }
