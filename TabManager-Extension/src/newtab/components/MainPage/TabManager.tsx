@@ -1,16 +1,17 @@
 import { useTabOverStore } from "@/newtab/stores/useTabOver";
 import { Tab } from "@/types/Tab";
 import { useDroppable } from "@dnd-kit/core";
-import { Accordion, Button, Card, Collapse, Text, TextInput, Title } from "@mantine/core";
-import { IconBrandFacebook, IconCircleX, IconSearch, IconXboxX } from "@tabler/icons-react";
-import { CreateCategoryModal } from "./CreateCategoryModal";
-import { useEffect, useState } from "react";
+import { Accordion, ActionIcon, Button, Card, Collapse, Text, TextInput, Title } from "@mantine/core";
+import { IconBrandFacebook, IconCircleX, IconEdit, IconSearch, IconTrash, IconXboxX } from "@tabler/icons-react";
+import { CategoryModalForm, useCategoryModalFormStores } from "./CategoryModalForm";
+import { MouseEventHandler, useEffect, useState } from "react";
 import { useSelectedSpace } from "@/newtab/stores/useSelectedSpace";
 import { getAllCategories } from "@/api/Category/getAllCategories";
 import { Category, FullyCategory } from "@/types/Category";
 import { useCategoriesStore } from "@/newtab/stores/useCategoriesStore";
 import { deleteBookmark } from "@/api/Bookmark/deleteBookmark";
 import { Bookmark } from "@/types/Bookmark";
+import { deleteCategory } from "@/api/Category/deleteCategory";
 
 export function TabManager() {
    return (
@@ -18,6 +19,7 @@ export function TabManager() {
          <Header />
          <Toolbar />
          <CategoryList />
+         <CategoryModalForm />
       </div>
    );
 }
@@ -40,19 +42,20 @@ function Header() {
       </div>
    );
 }
+
+
 function Toolbar() {
-   const [isCreateCategoryModalOpen, setIsCreateCategoryModalOpen] = useState(false);
+   const { setOpen : setCategoryModalOpen } = useCategoryModalFormStores();
    return (
       <div className="flex justify-end">
          <Button variant="light"
-            onClick={() => setIsCreateCategoryModalOpen(true)}
+            onClick={() => setCategoryModalOpen({
+               action: "create",
+               isOpen: true,
+            })}
          >
             Create
          </Button>
-         <CreateCategoryModal
-            isOpen={isCreateCategoryModalOpen}
-            onClose={() => setIsCreateCategoryModalOpen(false)}
-         />
       </div>
    );
 }
@@ -84,6 +87,19 @@ function CategoryCard({ category }: { category: FullyCategory }) {
    const { isOver, setNodeRef } = useDroppable({
       id: category.id,
    });
+   const setCategories = useCategoriesStore(state => state.setCategories);
+   const categories = useCategoriesStore(state => state.categories);
+
+   async function handleDeleteCategory(cateId: string) {
+      if(!categories) return 
+      const res = await deleteCategory({id: cateId})
+      if(res.ok) {
+         setCategories(categories.filter(cate => cateId !== cate.id)) 
+         return
+      }
+   }
+
+   const {setOpen: setCategoryModalOpen} = useCategoryModalFormStores()
    const [isOpened, setIsOpened] = useState(false);
    const dropOverId = useTabOverStore((state) => state.dropOverId);
    const tabItemData = useTabOverStore((state) => state.tabItemData);
@@ -91,9 +107,34 @@ function CategoryCard({ category }: { category: FullyCategory }) {
       <div className="border border-gray-600 rounded-lg px-5 py-2 bg-[#191A21] w-full" ref={setNodeRef}>
          <div
             onClick={() => setIsOpened(!isOpened)}
-            className="cursor-pointer select-none"
+            className="cursor-pointer select-none flex justify-between items-center group"
          >
             <h1 className="text-2xl font-bold"> {category.name} </h1>
+            <div className="flex gap-3 items-center group-hover:visible invisible">
+               <ActionIcon size={25} color="blue" >
+                  <IconEdit style={{ width: '70%', height: '70%' }} stroke={1.5}
+                     onClick={e=> {
+                        e.stopPropagation()
+                        setCategoryModalOpen({
+                           action: "edit",
+                           isOpen: true,
+                           initValues: {
+                              id: category.id,
+                              name: category.name
+                           }
+                        })
+                     }}
+                  />
+               </ActionIcon>
+               <ActionIcon size={25} color="pink"
+                  onClick={e=> {
+                     e.stopPropagation()
+                     handleDeleteCategory(category.id)
+                  }}
+               >
+                  <IconTrash style={{ width: '70%', height: '70%' }} stroke={1.5}/>
+               </ActionIcon>
+            </div>
          </div>
          <Collapse in={isOpened || dropOverId === category.id}>
             <div className="py-3 flex gap-5 flex-wrap">

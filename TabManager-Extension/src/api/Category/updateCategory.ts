@@ -4,10 +4,10 @@ type UpdateCategoryProps = {
    id: string;
    name: string;
 };
-export async function updateSpace({ id, name }: UpdateCategoryProps) {
+export async function updateCategory({ id, name }: UpdateCategoryProps) {
    const res = await fetchData({
       method: "PUT",
-      url: `space/${id}`,
+      url: `categories/${id}`,
       body: { name },
    });
    return res;
