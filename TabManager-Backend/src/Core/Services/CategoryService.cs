@@ -20,7 +20,7 @@ namespace Core.Services {
          _spaceRepository = spaceRepository;
       }
 
-      public async Task<CategoryResponseDTO> AddCategoryAsync(Guid spaceId, AddCategoryDTO category)
+      public async Task<FullyCategoryResponseDTO> AddCategoryAsync(Guid spaceId, AddCategoryDTO category)
       {
          var userId = _currentUserService.UserId;
          if(userId == null) {
@@ -69,7 +69,7 @@ namespace Core.Services {
          return categories;
       }
 
-      public async Task<CategoryResponseDTO?> GetCategoryByIdAsync(Guid categoryId)
+      public async Task<FullyCategoryResponseDTO?> GetCategoryByIdAsync(Guid categoryId)
       {
          var userId = _currentUserService.UserId;
          if(userId == null) {
@@ -88,7 +88,7 @@ namespace Core.Services {
          return category;
       }
 
-      public async Task<CategoryResponseDTO> UpdateCategoryAsync(Guid categoryId, UpdateCategoryDTO category)
+      public async Task<FullyCategoryResponseDTO> UpdateCategoryAsync(Guid categoryId, UpdateCategoryDTO category)
       {
          var userId = _currentUserService.UserId;
          if(userId == null) {

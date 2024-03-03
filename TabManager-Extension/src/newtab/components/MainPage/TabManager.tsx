@@ -84,7 +84,6 @@ function Header() {
    );
 }
 
-
 function Toolbar() {
    const { setOpen : setCategoryModalOpen } = useCategoryModalFormStores();
    return (

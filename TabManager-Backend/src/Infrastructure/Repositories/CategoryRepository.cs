@@ -12,7 +12,7 @@ namespace Infrastructure.Repositories {
          _context = context;
       }
 
-      public async Task<CategoryResponseDTO> AddCategoryAsync(Guid spaceId, AddCategoryDTO category)
+      public async Task<FullyCategoryResponseDTO> AddCategoryAsync(Guid spaceId, AddCategoryDTO category)
       {
          var spaceById = await _context.Spaces.FirstOrDefaultAsync(x => x.Id == spaceId);
          if(spaceById == null)
@@ -24,7 +24,7 @@ namespace Infrastructure.Repositories {
          };
          await _context.Categories.AddAsync(newCategory);
          await _context.SaveChangesAsync();
-         return new CategoryResponseDTO {
+         return new FullyCategoryResponseDTO {
             Id = newCategory.Id,
             Name = newCategory.Name,
          };
@@ -60,13 +60,20 @@ namespace Infrastructure.Repositories {
             }).ToListAsync();
       }
 
-      public Task<CategoryResponseDTO?> GetCategoryByIdAsync(Guid categoryId)
+      public Task<FullyCategoryResponseDTO?> GetCategoryByIdAsync(Guid categoryId)
       {
          return _context.Categories
             .Where(x => x.Id == categoryId)
-            .Select(x => new CategoryResponseDTO {
+            .Select(x => new FullyCategoryResponseDTO {
                Id = x.Id,
                Name = x.Name,
+               Bookmarks = x.Bookmarks.Select(y => new BookmarkResponseDTO {
+                  Id = y.Id,
+                  Description = y.Description,
+                  Title = y.Title,
+                  Url = y.Url,
+                  WebIcon = y.WebIcon
+               }).ToList()
             }).FirstOrDefaultAsync();
       }
 
@@ -80,7 +87,7 @@ namespace Infrastructure.Repositories {
          return _context.Categories.AnyAsync(x => x.Id == categoryId);
       }
 
-        public async Task<CategoryResponseDTO> UpdateCategoryAsync(Guid categoryId, UpdateCategoryDTO category)
+      public async Task<FullyCategoryResponseDTO> UpdateCategoryAsync(Guid categoryId, UpdateCategoryDTO category)
       {
          var categoryById = await _context.Categories.FirstOrDefaultAsync(x => x.Id == categoryId);
          if(categoryById == null)
@@ -88,9 +95,16 @@ namespace Infrastructure.Repositories {
          categoryById.Name = category.Name;
          _context.Categories.Update(categoryById);
          await _context.SaveChangesAsync();
-         return new CategoryResponseDTO {
+         return new FullyCategoryResponseDTO {
             Id = categoryById.Id,
             Name = categoryById.Name,
+            Bookmarks = categoryById.Bookmarks.Select(x => new BookmarkResponseDTO {
+               Id = x.Id,
+               Description = x.Description,
+               Title = x.Title,
+               Url = x.Url,
+               WebIcon = x.WebIcon
+            }).ToList()
          };
       }
     }

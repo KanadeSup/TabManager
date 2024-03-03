@@ -1,5 +1,6 @@
 import { addCategory } from "@/api/Category/addCategory";
 import { updateCategory } from "@/api/Category/updateCategory";
+import { useCategoriesStore } from "@/newtab/stores/useCategoriesStore";
 import { useSelectedSpace } from "@/newtab/stores/useSelectedSpace";
 import { Button, Modal, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
@@ -23,21 +24,30 @@ function CategoryModalForm(){
       })
    }, [initValues])
    const space = useSelectedSpace(state => state.space);
+   const {
+      addCategory: addCategoryToList,
+      updateCategory: updateCategoryFromList,
+   } = useCategoriesStore();
    const handleSubmit = async ({ name }: {name: string}) => {
       if(!space?.id) return
-      let res;
       if(action === "create"){
-         res = await addCategory({name, spaceId: space.id})
+         const res = await addCategory({name, spaceId: space.id})
+         if(res.ok) {
+            addCategoryToList(res.data)
+            setClose()
+            form.reset()
+         }
       }
-      else{
-         res = await updateCategory({
+      if(action === "edit"){
+         const res = await updateCategory({
             id: initValues?.id || "",
             name: name,
          })
-      }
-      if(res.ok) {
-         setClose()
-         form.reset()
+         if(res.ok) {
+            updateCategoryFromList(res.data)
+            setClose()
+            form.reset()
+         }
       }
    }
    return (
