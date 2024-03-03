@@ -12,6 +12,8 @@ namespace Core.Domain.Entities
       
       [Required]
       public required string HexColor { get; set; }
+
+      public DateTime CreationTime {get; set;} = new DateTime();
       
       public ICollection<Category>? Categories { get; set; }
 

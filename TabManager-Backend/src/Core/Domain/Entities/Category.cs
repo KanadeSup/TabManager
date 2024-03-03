@@ -10,6 +10,8 @@ namespace Core.Domain.Entities
       
       [Required]
       public required string Name { get; set; }
+
+      public DateTime CreationTime {get; set;} = new DateTime();
       
       public ICollection<Bookmark> Bookmarks { get; set; } = new List<Bookmark>();
 
