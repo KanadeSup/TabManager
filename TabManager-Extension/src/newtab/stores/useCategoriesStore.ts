@@ -4,7 +4,7 @@ import { create } from 'zustand'
 
 type CategoriesStore = {
    categories: FullyCategory[] | null;
-   setCategories: (categories: FullyCategory[]) => void;
+   setCategories: (categories: FullyCategory[] | null) => void;
    addCategory: (category: FullyCategory) => void;
    deleteCategory(cateId: string): void;
    updateCategory(category : FullyCategory): void;

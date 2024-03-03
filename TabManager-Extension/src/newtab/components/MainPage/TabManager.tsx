@@ -104,6 +104,10 @@ function CategoryList() {
    const setCategories = useCategoriesStore(state => state.setCategories);
    const categories = useCategoriesStore(state => state.categories);
    useEffect(() => {
+      if(space === null) {
+         setCategories(null)
+         return
+      }
       async function fetchCategories() {
          if (!space?.id) return;
          const res = await getAllCategories({ spaceId: space.id });
