@@ -44,7 +44,7 @@ function CategoryModalForm(){
       <Modal
          onClose={setClose}
          opened={isOpen}
-         title="Create category"
+         title={action === "create" ? "Create Category" : "Edit Category"}
          styles={{
             title: { fontSize: "20px", fontWeight: 600 },
          }}
