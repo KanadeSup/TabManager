@@ -193,7 +193,8 @@ function CategoryCard({ category }: { category: FullyCategory }) {
                         id: bookmark.id,
                         title: bookmark.title,
                         url: bookmark.url,
-                        icon: "data:image/png;base64,"+bookmark.webIcon
+                        icon: bookmark.webIcon,
+                        mineType: bookmark.iconMineType
                      }} 
                   />
                ))}
@@ -214,6 +215,7 @@ type TabCardProps = {
    title?: string;
    url: string;
    icon?: string;
+   mineType?: string;
 };
 function TabCard({ tab }: { tab: TabCardProps }) {
    const popBookmark = useCategoriesStore(state => state.deleteBookmark)
@@ -255,7 +257,10 @@ function TabCard({ tab }: { tab: TabCardProps }) {
             }}
          />
          <div className="flex items-center gap-2 border-b border-b-gray-700 pb-3">
-            <img src={tab.icon} className="w-8 h-8" />
+            <img 
+               src={tab.mineType ? `data:${tab.mineType};base64,${tab.icon}` : tab.icon}
+               className="w-8 h-8" 
+            />
             <h1 className="font-medium text-[15px] truncate"> {tab.title} </h1>
          </div>
          <Text c="dimmed" size="sm">

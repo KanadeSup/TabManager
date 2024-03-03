@@ -3,4 +3,5 @@ export type Bookmark = {
    title?: string;
    url: string;
    webIcon?: string;
+   iconMineType?: string;
 }
