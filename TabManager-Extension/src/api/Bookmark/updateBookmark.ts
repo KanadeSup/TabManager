@@ -9,7 +9,7 @@ type UpdateBookmark = {
    url: string;
    iconUrl: string;
 };
-export async function updateSpace({ id, bookmark }: UpdateBookmarkProps) {
+export async function updateBookmark({ id, bookmark }: UpdateBookmarkProps) {
    const res = await fetchData({
       method: "PUT",
       url: `bookmarks/${id}`,
