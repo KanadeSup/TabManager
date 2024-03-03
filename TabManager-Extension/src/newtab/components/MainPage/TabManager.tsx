@@ -31,11 +31,13 @@ function Header() {
    const space = useSelectedSpace(state => state.space);
    const setSpaceModalOpen = useSpaceModalFormStores(state => state.setOpen);
    const removeSpaceFromList = useSpaceStore(state => state.deleteSpace);
+   const setSelectedSpace = useSelectedSpace(state => state.setSpace);
    const handleDeleteSpace = async () => {
       if(!space) return
       const res = await deleteSpace({id: space.id})
       if(res.ok) {
          removeSpaceFromList(space)
+         setSelectedSpace(null)
       }
    }
    return (
