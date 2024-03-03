@@ -7,5 +7,13 @@ type SelectedSpace = {
 }
 export const useSelectedSpace = create<SelectedSpace>(set => ({
    space : null,
-   setSpace: (space) => set({space})
+   setSpace: (space) => set(state => {
+      if(space) {
+         localStorage.setItem("lastSelectedSpaceId", space.id)
+      }
+      return {
+         ...state,
+         space
+      }
+   })
 }))

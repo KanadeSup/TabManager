@@ -12,6 +12,9 @@ import { useCategoriesStore } from "@/newtab/stores/useCategoriesStore";
 import { deleteBookmark } from "@/api/Bookmark/deleteBookmark";
 import { Bookmark } from "@/types/Bookmark";
 import { deleteCategory } from "@/api/Category/deleteCategory";
+import { SpaceModalForm, useSpaceModalFormStores } from "./SpaceModalForm";
+import { deleteSpace } from "@/api/space/deleteSpace";
+import { useSpaceStore } from "@/newtab/stores/useSpaceStore";
 
 export function TabManager() {
    return (
@@ -20,25 +23,61 @@ export function TabManager() {
          <Toolbar />
          <CategoryList />
          <CategoryModalForm />
+         <SpaceModalForm />
       </div>
    );
 }
 function Header() {
    const space = useSelectedSpace(state => state.space);
+   const setSpaceModalOpen = useSpaceModalFormStores(state => state.setOpen);
+   const removeSpaceFromList = useSpaceStore(state => state.deleteSpace);
+   const handleDeleteSpace = async () => {
+      if(!space) return
+      const res = await deleteSpace({id: space.id})
+      if(res.ok) {
+         removeSpaceFromList(space)
+      }
+   }
    return (
       <div className="flex items-center justify-between py-3">
-         <h1 className="text-[25px] font-bold"> {space?.name} </h1>
-         <TextInput
-            leftSection={<IconSearch size={16} />}
-            placeholder="Search"
-            styles={{
-               input: {
-                  backgroundColor: "#191A21",
-                  border: "none",
-                  width: "270px",
-               },
+         <div className="flex gap-2 items-center cursor-pointer hover:bg-gray-800 px-2 rounded-lg group"
+            onClick={() => {
+               if(!space) return
+               setSpaceModalOpen({
+                  action: "edit",
+                  isOpen: true,
+                  initValues: {
+                     id: space.id,
+                     name: space.name,
+                     color: space.hexColor
+                  }
+               })
             }}
-         />
+         >
+            <h1 className="text-[25px] font-bold"> {space?.name} </h1>
+            <IconEdit size={18} className="group-hover:visible invisible"/>
+         </div>
+         <div className="flex gap-2 items-center">
+            <TextInput
+               leftSection={<IconSearch size={16} />}
+               placeholder="Search"
+               styles={{
+                  input: {
+                     backgroundColor: "#191A21",
+                     border: "none",
+                     width: "270px",
+                  },
+               }}
+            />
+            <ActionIcon size={30} color="pink"
+               onClick={e=> {
+                  e.stopPropagation()
+                  handleDeleteSpace()
+               }}
+            >
+               <IconTrash style={{ width: '70%', height: '70%' }} stroke={1.5}/>
+            </ActionIcon>
+         </div>
       </div>
    );
 }
