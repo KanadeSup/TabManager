@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(AnnotationDbContext))]
-    [Migration("20240303043453_Add_SpaceCreationTime")]
+    [Migration("20240303051218_Add_SpaceCreationTime")]
     partial class Add_SpaceCreationTime
     {
         /// <inheritdoc />

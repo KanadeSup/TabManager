@@ -27,6 +27,7 @@ namespace Infrastructure.Repositories {
          return new FullyCategoryResponseDTO {
             Id = newCategory.Id,
             Name = newCategory.Name,
+            CreationTime = newCategory.CreationTime,
          };
       }
 
@@ -50,6 +51,7 @@ namespace Infrastructure.Repositories {
             .Select(x => new FullyCategoryResponseDTO {
                Id = x.Id,
                Name = x.Name,
+               CreationTime = x.CreationTime,
                Bookmarks = x.Bookmarks.Select(y => new BookmarkResponseDTO {
                   Id = y.Id,
                   Title = y.Title,
@@ -67,6 +69,7 @@ namespace Infrastructure.Repositories {
             .Select(x => new FullyCategoryResponseDTO {
                Id = x.Id,
                Name = x.Name,
+               CreationTime = x.CreationTime,
                Bookmarks = x.Bookmarks.Select(y => new BookmarkResponseDTO {
                   Id = y.Id,
                   Description = y.Description,
@@ -98,6 +101,7 @@ namespace Infrastructure.Repositories {
          return new FullyCategoryResponseDTO {
             Id = categoryById.Id,
             Name = categoryById.Name,
+            CreationTime = categoryById.CreationTime,
             Bookmarks = categoryById.Bookmarks.Select(x => new BookmarkResponseDTO {
                Id = x.Id,
                Description = x.Description,

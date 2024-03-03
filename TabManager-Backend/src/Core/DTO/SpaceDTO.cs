@@ -14,5 +14,7 @@ namespace Core.DTO
       [Required]
       [RegularExpression(@"^#([A-Fa-f0-9]{6})$", ErrorMessage = "Invalid hex color.")]
       public string HexColor { get; set; } = null!;
+
+      public DateTime CreationTime {get; set;}
    }
 }

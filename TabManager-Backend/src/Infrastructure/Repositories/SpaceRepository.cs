@@ -31,6 +31,7 @@ namespace Infrastructure.Repositories
             Id = newSpace.Id,
             Name = newSpace.Name,
             HexColor = newSpace.HexColor,
+            CreationTime = newSpace.CreationTime,
          };
       }
 
@@ -52,6 +53,7 @@ namespace Infrastructure.Repositories
             Id = space.Id,
             Name = space.Name,
             HexColor = space.HexColor,
+            CreationTime = space.CreationTime,
          };
       }
 
@@ -63,6 +65,7 @@ namespace Infrastructure.Repositories
                Id = s.Id,
                Name = s.Name,
                HexColor = s.HexColor,
+               CreationTime = s.CreationTime,
             }).ToListAsync();
          return spaces;
       }
@@ -81,8 +84,9 @@ namespace Infrastructure.Repositories
          
          return new SpaceDTO {
             Id = spaceId,
-            Name = space.Name,
-            HexColor = space.HexColor,
+            Name = spaceById.Name,
+            HexColor = spaceById.HexColor,
+            CreationTime = spaceById.CreationTime,
          };
       }
 

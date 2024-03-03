@@ -13,7 +13,7 @@ namespace Core.Domain.Entities
       [Required]
       public required string HexColor { get; set; }
 
-      public DateTime CreationTime {get; set;} = new DateTime();
+      public DateTime CreationTime {get; set;} = DateTime.Now.ToUniversalTime();
       
       public ICollection<Category>? Categories { get; set; }
 
