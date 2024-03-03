@@ -3,23 +3,24 @@ import { register } from "@/api/auth/register";
 import { Button, PasswordInput, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 type FormValues = {
    email: string;
    password: string;
 };
 
-type RegisterPageProps = {
-   setPage: (page: 'login' | 'register') => void
-}
-export function Register({ setPage } : RegisterPageProps) {
+export function Register() {
+   const navigate = useNavigate();
+   const [loading, setLoading] = useState(false)
    const handleRegister = async ({email, password}: FormValues) => {
-      const res = await register({email, password});
+      const res = await register({email, password})
       if (res.ok) {
-         setPage('login')
+         navigate('/login')
       } else {
          setError(res.data || "An error occurred")
       }
+      setLoading(false)
    };
    const form = useForm({
       initialValues: {
@@ -40,7 +41,10 @@ export function Register({ setPage } : RegisterPageProps) {
             <h1 className="text-[28px] text-center font-bold">Sign in to your account</h1>
             <form
                className="flex flex-col gap-5"
-               onSubmit={form.onSubmit((values) => handleRegister(values))}
+               onSubmit={form.onSubmit((values) => {
+                  setLoading(true)
+                  handleRegister(values)
+               })}
             >
                <TextInput
                   label="Email"
@@ -63,7 +67,9 @@ export function Register({ setPage } : RegisterPageProps) {
                   {...form.getInputProps("rePassword")}
                />
                <div className="mt-5 flex flex-col gap-2">
-                  <Button type="submit" variant="filled" size="lg" color="violet">
+                  <Button type="submit" variant="filled" size="lg" color="violet"
+                     loading={loading}
+                  >
                      Sign up
                   </Button>
                   <p className="text-red-500 text-sm"> 
@@ -73,7 +79,7 @@ export function Register({ setPage } : RegisterPageProps) {
                <p className="text-center font-bold text-sm">
                   Already has account?{" "}
                   <span className="text-violet-600 font-bold cursor-pointer"
-                     onClick={() => setPage('login')}
+                     onClick={() => navigate('/login')}
                   >
                      Login
                   </span>
