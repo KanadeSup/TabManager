@@ -3,19 +3,25 @@ import { updateCategory } from "@/api/Category/updateCategory";
 import { useSelectedSpace } from "@/newtab/stores/useSelectedSpace";
 import { Button, Modal, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { create } from "zustand";
 
 function CategoryModalForm(){
    const { action, isOpen, initValues, setClose } = useCategoryModalFormStores()
    const form = useForm({
       initialValues: {
-         name: initValues?.name || ""
+         name: ""
       },
       validate: {
          name: (value) => (value.length > 0 ? null : "Name is required"),
       },
    });
+   useEffect(() => {
+      if(!initValues) return
+      form.setValues({
+         name: initValues.name
+      })
+   }, [initValues])
    const space = useSelectedSpace(state => state.space);
    const handleSubmit = async ({ name }: {name: string}) => {
       if(!space?.id) return
