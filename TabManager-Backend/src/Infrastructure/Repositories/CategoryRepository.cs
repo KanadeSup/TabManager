@@ -57,6 +57,7 @@ namespace Infrastructure.Repositories {
                   Title = y.Title,
                   Url = y.Url,
                   WebIcon = y.WebIcon,
+                  IconMineType = y.IconMineType,
                   Description = y.Description
                }).ToList(),
             }).ToListAsync();
@@ -75,7 +76,8 @@ namespace Infrastructure.Repositories {
                   Description = y.Description,
                   Title = y.Title,
                   Url = y.Url,
-                  WebIcon = y.WebIcon
+                  WebIcon = y.WebIcon,
+                  IconMineType = y.IconMineType,
                }).ToList()
             }).FirstOrDefaultAsync();
       }
@@ -107,7 +109,8 @@ namespace Infrastructure.Repositories {
                Description = x.Description,
                Title = x.Title,
                Url = x.Url,
-               WebIcon = x.WebIcon
+               WebIcon = x.WebIcon,
+               IconMineType = x.IconMineType,
             }).ToList()
          };
       }

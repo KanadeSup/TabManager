@@ -31,6 +31,7 @@ namespace Infrastructure.Repositories {
             Description = bookmarkDTO.Description,
             Url = bookmarkDTO.Url,
             WebIcon = bookmarkDTO.Icon != null? await bookmarkDTO.Icon.GetBytes() : null,
+            IconMineType = bookmarkDTO.Icon != null? bookmarkDTO.Icon.ContentType : null,
             Category = categoryById
          };            
          await _context.Bookmarks.AddAsync(bookmark);
@@ -66,6 +67,7 @@ namespace Infrastructure.Repositories {
             Description = bookmark.Description,
             Url = bookmark.Url,
             WebIcon = bookmark.WebIcon,
+            IconMineType = bookmark.IconMineType
          };
       }
 
@@ -82,6 +84,7 @@ namespace Infrastructure.Repositories {
                Description = x.Description,
                Url = x.Url,
                WebIcon = x.WebIcon,
+               IconMineType = x.IconMineType
             })
             .ToListAsync();
       }
@@ -113,6 +116,7 @@ namespace Infrastructure.Repositories {
             Description = bookmarkById.Description,
             Url = bookmarkById.Url,
             WebIcon = bookmarkById.WebIcon,
+            IconMineType = bookmarkById.IconMineType
          };
       }
    }

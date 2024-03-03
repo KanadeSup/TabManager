@@ -16,6 +16,8 @@ namespace Core.Domain.Entities
       public string? Description { get; set; }
       
       public byte[]? WebIcon { get; set; }
+
+      public string? IconMineType { get; set; }
       
       [ForeignKey("Category_Id")]
       [Required]
