@@ -56,7 +56,13 @@ function SpaceList() {
       <div className="mt-1">
          {
             spaces ? 
-               spaces.map(space => (
+               spaces
+               .sort((a, b) => {
+                  const date1 = new Date(a.creationTime!)
+                  const date2 = new Date(b.creationTime!)
+                  return date1.getTime() - date2.getTime()
+               })
+               .map(space => (
                   <SpaceCard key={space.id} space={space}/>
                )) : (
                   null

@@ -115,9 +115,17 @@ function CategoryList() {
    return (
       <div className="space-y-5">
          {
-            categories ? categories.map(category => (
-               <CategoryCard key={category.id} category={category} />
-            )) : null
+            categories ? 
+               categories
+                  .sort((a, b) => {
+                     const date1 = new Date(a.creationTime!);
+                     const date2 = new Date(b.creationTime!);
+                     return date2.getTime() - date1.getTime();
+                  })
+                  .map(category => (
+                     <CategoryCard key={category.id} category={category} />
+                  )) 
+               : null
          }
       </div>
    );
