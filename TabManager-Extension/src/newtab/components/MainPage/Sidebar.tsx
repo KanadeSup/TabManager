@@ -5,6 +5,8 @@ import { CreateSpaceModal } from "./CreateSpaceModal";
 import { getAllSPace } from "@/api/space/getAllSpace";
 import { Space } from "@/types/Space";
 import { useSelectedSpace } from "@/newtab/stores/useSelectedSpace";
+import { logout } from "@/newtab/Utils/logout";
+import { useNavigate } from "react-router-dom";
 
 export function Sidebar() {
     return (
@@ -74,6 +76,7 @@ function SpaceCard({ space }: { space: Space }) {
 }
 
 function Footer() {
+   const navigate = useNavigate()
    return (
       <div className="mt-auto">
          <div className="flex items-center gap-2 px-2 py-2 cursor-pointer hover:bg-gray-800 rounded-lg"> 
@@ -82,7 +85,14 @@ function Footer() {
          </div>
          <div className="flex items-center gap-2 px-2 py-2 cursor-pointer hover:bg-gray-800 rounded-lg"> 
             <IconLogout size={23} color="gray"/>
-            <h1 className="font-bold text-[17px] text-gray-400"> Logout </h1>
+            <h1 className="font-bold text-[17px] text-gray-400"
+               onClick={() => {
+                  logout()   
+                  navigate("/login")
+               }}
+            > 
+               Logout 
+            </h1>
          </div>
       </div>
    )
