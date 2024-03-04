@@ -5,6 +5,7 @@ using Core.Domain.RepositoryContracts;
 using Core.DTO;
 using Core.ServiceContracts;
 using Common.Exceptions;
+using Microsoft.Extensions.Configuration;
 
 namespace Core.Services
 {
@@ -14,13 +15,19 @@ namespace Core.Services
       private readonly IJwtService _jwtService;
       private readonly int _iterationCount = 10000;
       private readonly int _keySize = 64;
+      private readonly IConfiguration _configuration;
 
-      public AuthenticationService(IAccountRepository accountRepository, IJwtService jwtService)
+      public AuthenticationService(
+         IAccountRepository accountRepository, 
+         IJwtService jwtService, 
+         IConfiguration configuration
+      )
       {
          _accountRepository = accountRepository;
          _jwtService = jwtService;
+         _configuration = configuration;
       }
-      public async Task<string> SignInAsync(LoginDTO loginDTO)
+      public async Task<TokenDTO> SignInAsync(LoginDTO loginDTO)
       {
          var userAccount = await _accountRepository.GetAccountByEmail(loginDTO.Email);
          if(userAccount == null)
@@ -29,7 +36,34 @@ namespace Core.Services
          if(hashedPassword != userAccount.HashedPassword)
             throw new AccountIsInvalidException("Invalid password.");
 
-         return _jwtService.GenerateJwtToken(userAccount);
+         string refreshToken = GenerateRefreshToken();
+         await _accountRepository.UpdateRefreshToken(
+            userAccount.Id, 
+            refreshToken, 
+            DateTime.UtcNow.AddMinutes(GetRefreshTokenExpireMinute())
+         );
+         return new TokenDTO {
+            Token = _jwtService.GenerateJwtToken(userAccount),
+            RefreshToken = refreshToken
+         };
+      }
+
+      public async Task<TokenDTO> RefreshTokenAsync(string refreshToken)
+      {
+         var userByRefreshToken = await _accountRepository.GetAccountByRefreshToken(refreshToken);
+         if(userByRefreshToken == null)
+            throw new InvalidRefreshTokenException("Invalid refresh token or expired.");
+
+         string newRefreshToken = GenerateRefreshToken();
+         await _accountRepository.UpdateRefreshToken(
+            userByRefreshToken.Id, 
+            newRefreshToken,
+            DateTime.UtcNow.AddMinutes(GetRefreshTokenExpireMinute())
+         );
+         return new TokenDTO {
+            Token = _jwtService.GenerateJwtToken(userByRefreshToken),
+            RefreshToken = newRefreshToken
+         };
       }
 
       public async Task CreateAccountAsync(RegisterDTO registerDTO)
@@ -62,6 +96,23 @@ namespace Core.Services
             _keySize
          );
          return Convert.ToHexString(hash);
+      }
+
+      private string GenerateRefreshToken()
+      {
+         var randomNumber = new byte[32];
+         using (var rng = RandomNumberGenerator.Create()) {
+            rng.GetBytes(randomNumber);
+            return Convert.ToBase64String(randomNumber);
+         }
+      }
+
+      private int GetRefreshTokenExpireMinute()
+      {
+         string? refreshTokenExpireString = _configuration["Jwt:ExpireMinute_RefreshToken"];
+         if(string.IsNullOrEmpty(refreshTokenExpireString))
+            throw new Exception("Jwt:ExpireMinute_RefreshToken is missing in appsettings.json");
+         return int.Parse(refreshTokenExpireString);
       }
    }
 }

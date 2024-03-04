@@ -12,4 +12,15 @@ namespace Common.Exceptions
       {}
    }
 
+   public class UnauthorizedException : CustomException
+   {
+      public UnauthorizedException(string message) : base(message, 401)
+      {}
+   }
+
+   public class InvalidRefreshTokenException : CustomException
+   {
+      public InvalidRefreshTokenException(string message) : base(message)
+      {}
+   }
 }

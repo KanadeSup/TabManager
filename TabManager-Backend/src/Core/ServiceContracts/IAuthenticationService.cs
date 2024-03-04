@@ -5,6 +5,7 @@ namespace Core.ServiceContracts
    public interface IAuthenticationService
    {
       public Task CreateAccountAsync(RegisterDTO registerDTO);
-      public Task<string> SignInAsync(LoginDTO loginDTO);
+      public Task<TokenDTO> SignInAsync(LoginDTO loginDTO);
+      public Task<TokenDTO> RefreshTokenAsync(string refreshToken);
    }
 }

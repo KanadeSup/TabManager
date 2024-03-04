@@ -25,5 +25,29 @@ namespace Infrastructure.Repositories
             throw new ArgumentNullException("Email cannot be null.");
          return await _context.UserAccounts.FirstOrDefaultAsync(x => x.Email == email);
       }
+
+      public async Task<UserAccount?> GetAccountById(Guid id)
+      {
+         return await _context.UserAccounts.FirstOrDefaultAsync(x => x.Id == id);
+      }
+
+      public async Task UpdateRefreshToken(Guid id, string refreshToken, DateTime expiredAt)
+      {
+         var userAccount = await _context.UserAccounts.FirstOrDefaultAsync(x => x.Id == id);
+         if(userAccount == null)
+            throw new Exception("User is not existed.");
+         userAccount.RefreshToken = refreshToken;
+         userAccount.RefreshTokenExpiredAt = expiredAt;
+         await _context.SaveChangesAsync();
+      }
+      
+      public async Task<UserAccount?> GetAccountByRefreshToken(string refreshToken)
+      {
+         return await _context.UserAccounts
+            .FirstOrDefaultAsync(
+               x => x.RefreshToken == refreshToken && 
+               x.RefreshTokenExpiredAt > DateTime.UtcNow
+            );
+      }
    }
 }

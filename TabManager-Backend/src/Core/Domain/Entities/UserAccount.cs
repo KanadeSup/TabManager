@@ -17,6 +17,10 @@ namespace Core.Domain.Entities
       [Required]
       public required byte[] Salt { get; set; }
 
+      public string? RefreshToken { get; set; }
+
+      public DateTime RefreshTokenExpiredAt { get; set; }
+
       [Required]
       public required bool IsEmailVerified { get; set; }
 

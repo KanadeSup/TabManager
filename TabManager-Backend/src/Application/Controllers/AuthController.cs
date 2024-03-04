@@ -26,5 +26,12 @@ namespace Application.Controllers
          var token = await _authenticationService.SignInAsync(loginDTO);
          return Ok(token);
       }
+
+      [HttpPost("refresh")]
+      public async Task<IActionResult> Refresh([FromBody] string refreshToken)
+      {
+         var token = await _authenticationService.RefreshTokenAsync(refreshToken);
+         return Ok(token);
+      }
    }
 }
