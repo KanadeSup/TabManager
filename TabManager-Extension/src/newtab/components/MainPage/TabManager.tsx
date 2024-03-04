@@ -19,7 +19,7 @@ import { IconMonkeySleep } from "@/assets/monkeysleep";
 
 export function TabManager() {
    const selectedSpace = useSelectedSpace(state => state.space);
-   if(selectedSpace === null) return <EmptyTabManager /> 
+   if(!selectedSpace || selectedSpace === null) return <EmptyTabManager /> 
    return (
       <div className="bg-[#121319] flex-grow rounded-l-xl px-5 space-y-5">
          <Header />
