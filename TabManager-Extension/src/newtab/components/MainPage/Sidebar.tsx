@@ -92,14 +92,14 @@ function Footer() {
             <IconSettings size={23} color="gray"/>
             <h1 className="font-bold text-[17px] text-gray-400"> Settings </h1>
          </div>
-         <div className="flex items-center gap-2 px-2 py-2 cursor-pointer hover:bg-gray-800 rounded-lg"> 
+         <div className="flex items-center gap-2 px-2 py-2 cursor-pointer hover:bg-gray-800 rounded-lg"
+            onClick={() => {
+               logout()   
+               navigate("/login")
+            }}
+         > 
             <IconLogout size={23} color="gray"/>
-            <h1 className="font-bold text-[17px] text-gray-400"
-               onClick={() => {
-                  logout()   
-                  navigate("/login")
-               }}
-            > 
+            <h1 className="font-bold text-[17px] text-gray-400"> 
                Logout 
             </h1>
          </div>
