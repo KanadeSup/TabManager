@@ -1,5 +1,6 @@
 import { addSpace } from "@/api/space/addSpace";
 import { updateSpace } from "@/api/space/updateSpace";
+import { useSelectedSpace } from "@/newtab/stores/useSelectedSpace";
 import { useSpaceStore } from "@/newtab/stores/useSpaceStore";
 import { Button, ColorInput, Modal, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
@@ -14,6 +15,7 @@ function SpaceModalForm() {
    const { action, isOpen, initValues, setClose } = useSpaceModalFormStores()
    const addToSpaceList = useSpaceStore(state => state.addSpace)
    const updateToSpaceList = useSpaceStore(state => state.updateSpace)
+   const setSelectedSpace = useSelectedSpace(state => state.setSpace)
    const form = useForm({
       initialValues: {
          name: "",
@@ -39,6 +41,7 @@ function SpaceModalForm() {
          })
          if(res.ok) {
             addToSpaceList(res.data)
+            setSelectedSpace(res.data)
             form.reset()
             setClose()
          }
