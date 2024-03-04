@@ -94,7 +94,9 @@ namespace Infrastructure.Repositories {
 
       public async Task<FullyCategoryResponseDTO> UpdateCategoryAsync(Guid categoryId, UpdateCategoryDTO category)
       {
-         var categoryById = await _context.Categories.FirstOrDefaultAsync(x => x.Id == categoryId);
+         var categoryById = await _context.Categories
+            .Include(x=>x.Bookmarks)
+            .FirstOrDefaultAsync(x => x.Id == categoryId);
          if(categoryById == null)
             throw new ArgumentException("categoryId is not valid");
          categoryById.Name = category.Name;
