@@ -2,7 +2,7 @@ import { useTabOverStore } from "@/newtab/stores/useTabOver";
 import { Tab } from "@/types/Tab";
 import { useDroppable } from "@dnd-kit/core";
 import { Accordion, ActionIcon, Button, Card, Collapse, Text, TextInput, Title } from "@mantine/core";
-import { IconBrandFacebook, IconCircleX, IconEdit, IconSearch, IconTrash, IconXboxX } from "@tabler/icons-react";
+import { IconBrandFacebook, IconChevronDown, IconChevronRight, IconCircleX, IconEdit, IconSearch, IconTrash, IconXboxX } from "@tabler/icons-react";
 import { CategoryModalForm, useCategoryModalFormStores } from "./CategoryModalForm";
 import { MouseEventHandler, useEffect, useState } from "react";
 import { useSelectedSpace } from "@/newtab/stores/useSelectedSpace";
@@ -187,10 +187,10 @@ function CategoryCard({ category }: { category: FullyCategory }) {
       <div className="border border-gray-600 rounded-lg px-5 py-2 bg-[#191A21] w-full" ref={setNodeRef}>
          <div
             onClick={() => setIsOpened(!isOpened)}
-            className="cursor-pointer select-none flex justify-between items-center group"
+            className="cursor-pointer select-none flex justify-start items-center group"
          >
             <h1 className="text-2xl font-bold"> {category.name} </h1>
-            <div className="flex gap-3 items-center group-hover:visible invisible">
+            <div className="ml-auto flex gap-3 items-center group-hover:visible invisible">
                <ActionIcon size={25} color="blue" >
                   <IconEdit style={{ width: '70%', height: '70%' }} stroke={1.5}
                      onClick={e=> {
@@ -214,6 +214,15 @@ function CategoryCard({ category }: { category: FullyCategory }) {
                >
                   <IconTrash style={{ width: '70%', height: '70%' }} stroke={1.5}/>
                </ActionIcon>
+            </div>
+            <div className="ml-2">
+               {
+                  isOpened ?  (
+                     <IconChevronDown size={25} />
+                  ) : (
+                     <IconChevronRight size={25} />
+                  )
+               }
             </div>
          </div>
          <Collapse in={isOpened || dropOverId === category.id}>
