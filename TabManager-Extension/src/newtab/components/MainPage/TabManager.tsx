@@ -15,8 +15,11 @@ import { deleteCategory } from "@/api/Category/deleteCategory";
 import { SpaceModalForm, useSpaceModalFormStores } from "./SpaceModalForm";
 import { deleteSpace } from "@/api/space/deleteSpace";
 import { useSpaceStore } from "@/newtab/stores/useSpaceStore";
+import { IconMonkeySleep } from "@/assets/monkeysleep";
 
 export function TabManager() {
+   const selectedSpace = useSelectedSpace(state => state.space);
+   if(selectedSpace === null) return <EmptyTabManager /> 
    return (
       <div className="bg-[#121319] flex-grow rounded-l-xl px-5 space-y-5">
          <Header />
@@ -27,6 +30,29 @@ export function TabManager() {
       </div>
    );
 }
+
+function EmptyTabManager() {
+   const setSpaceModalOpen = useSpaceModalFormStores(state => state.setOpen);
+   return (
+      <div className="flex items-center justify-center h-full w-full bg-[#121319]">
+         <div className="flex flex-col items-center gap-5">
+            <IconMonkeySleep width={500} heigh={300}/>
+            <Title order={1}> Create a space to get started </Title>
+            <Button 
+               variant="gradient"
+               gradient={{ from: 'blue', to: 'cyan', deg: 90 }}
+               onClick={() => setSpaceModalOpen({
+                  action: "create",
+                  isOpen: true
+               })}
+            >
+               Create a space
+            </Button>
+         </div>
+      </div>
+   );
+}
+
 function Header() {
    const space = useSelectedSpace(state => state.space);
    const setSpaceModalOpen = useSpaceModalFormStores(state => state.setOpen);
