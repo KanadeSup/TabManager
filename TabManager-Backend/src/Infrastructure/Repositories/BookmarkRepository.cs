@@ -43,6 +43,7 @@ namespace Infrastructure.Repositories {
             Description = bookmark.Description,
             Url = bookmark.Url,
             WebIcon = bookmark.WebIcon,
+            IconMineType = bookmark.IconMineType
          };
       }
 
