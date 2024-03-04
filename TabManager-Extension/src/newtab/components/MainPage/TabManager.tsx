@@ -16,6 +16,7 @@ import { SpaceModalForm, useSpaceModalFormStores } from "./SpaceModalForm";
 import { deleteSpace } from "@/api/space/deleteSpace";
 import { useSpaceStore } from "@/newtab/stores/useSpaceStore";
 import { IconMonkeySleep } from "@/assets/monkeysleep";
+import { IconWithFallback } from "../IconWithFallback";
 
 export function TabManager() {
    const selectedSpace = useSelectedSpace(state => state.space);
@@ -288,9 +289,9 @@ function TabCard({ tab }: { tab: TabCardProps }) {
             }}
          />
          <div className="flex items-center gap-2 border-b border-b-gray-700 pb-3">
-            <img 
+            <IconWithFallback 
                src={tab.mineType ? `data:${tab.mineType};base64,${tab.icon}` : tab.icon}
-               className="w-8 h-8" 
+               size={33}
             />
             <h1 className="font-medium text-[15px] truncate"> {tab.title} </h1>
          </div>

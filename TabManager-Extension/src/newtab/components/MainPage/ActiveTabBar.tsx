@@ -2,6 +2,7 @@ import { useActiveTabStore } from "@/newtab/stores/useActiveTabStore";
 import { ActiveTab } from "@/types/Tab";
 import { useDraggable } from "@dnd-kit/core";
 import { useEffect, useState } from "react";
+import { IconWithFallback } from "../IconWithFallback";
 
 export function ActiveTabBar() {
    return (
@@ -48,7 +49,7 @@ function TabCard({tab} : {tab: ActiveTab}) {
          {...listeners}
          {...attributes}
       >
-         <img src={tab.icon} className="w-4 h-4"/>
+         <IconWithFallback src={tab.icon} size={25}/>
          <h1 className="truncate font-medium text-[14px]">{tab.title}</h1>
       </div>
    );
