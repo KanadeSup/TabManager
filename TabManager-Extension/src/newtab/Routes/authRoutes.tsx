@@ -7,7 +7,7 @@ export const authRoutes =  [
       path: "/Login",
       element: <Login />,
       loader: () => {
-         if(localStorage.getItem("token")) {
+         if(localStorage.getItem("accessToken")) {
             return redirect("/")
          }
          return null

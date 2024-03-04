@@ -1,4 +1,4 @@
-import { fetchData } from "../fetchData";
+import { fetchPrivateData } from "../fetchPrivateData";
 
 type UpdateSpaceProps = {
    id: string;
@@ -6,7 +6,7 @@ type UpdateSpaceProps = {
    hexColor: string;
 };
 export async function updateSpace({ id, name, hexColor }: UpdateSpaceProps) {
-   const res = await fetchData({
+   const res = await fetchPrivateData({
       method: "PUT",
       url: `space/${id}`,
       body: { name, hexColor },

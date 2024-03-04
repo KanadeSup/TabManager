@@ -1,4 +1,4 @@
-import { fetchData } from "../fetchData";
+import { fetchPrivateData } from "../fetchPrivateData";
 
 type UpdateBookmarkProps = {
    id: string;
@@ -10,7 +10,7 @@ type UpdateBookmark = {
    iconUrl: string;
 };
 export async function updateBookmark({ id, bookmark }: UpdateBookmarkProps) {
-   const res = await fetchData({
+   const res = await fetchPrivateData({
       method: "PUT",
       url: `bookmarks/${id}`,
       body: { bookmark },

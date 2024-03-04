@@ -1,7 +1,7 @@
-import { fetchData } from "../fetchData";
+import { fetchPrivateData } from "../fetchPrivateData";
 
 export async function getBookmarks({ cateId }: { cateId: string }) {
-   const res = await fetchData({
+   const res = await fetchPrivateData({
       method: "GET",
       url: `categories/${cateId}/bookmarks`,
    });

@@ -1,6 +1,5 @@
 import { base64ImgToImgData } from "@/ultilities/helper";
-import { fetchData } from "../fetchData";
-
+import { fetchPrivateData } from "../fetchPrivateData";
 type AddBookmarkProps = {
    categoryId: string;
    bookmark: AddBookmark;
@@ -19,7 +18,7 @@ export async function addBookmark({ categoryId, bookmark }: AddBookmarkProps) {
       const imgData = base64ImgToImgData(bookmark.icon)
       formData.append("icon", imgData.data, imgData.type);
    }
-   const res = await fetchData({
+   const res = await fetchPrivateData({
       method: "POST",
       url: `categories/${categoryId}/bookmarks`,
       headers: {

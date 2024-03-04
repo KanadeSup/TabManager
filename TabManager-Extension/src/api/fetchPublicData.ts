@@ -1,6 +1,6 @@
 import { appsetting } from "@/appsetting";
 import axios, { AxiosError } from "axios";
-export async function fetchData({method = "GET", url="", headers = {}, body={}}) {
+export async function fetchPublicData({method = "GET", url="", headers = {}, body={}}) {
    headers = {
       "Content-Type": "application/json",
       ...headers,
